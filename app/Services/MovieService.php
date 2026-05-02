@@ -2,26 +2,28 @@
 
 namespace App\Services;
 
-use App\Models\Movie;
 use App\Models\Category;
+use App\Repositories\Interfaces\MovieRepositoryInterface;
 
 class MovieService
 {
+    protected $movieRepository;
+
+    public function __construct(MovieRepositoryInterface $movieRepository)
+    {
+        $this->movieRepository = $movieRepository;
+    }
+
     public function getAllMovies($search = null)
     {
-        $query = Movie::latest();
-
-        if ($search) {
-            $query->where('judul', 'like', '%' . $search . '%')
-                ->orWhere('sinopsis', 'like', '%' . $search . '%');
-        }
-
-        return $query->paginate(6)->withQueryString();
+        return $this->movieRepository
+            ->getAllMovies($search);
     }
 
     public function getMovieById($id)
     {
-        return Movie::findOrFail($id);
+        return $this->movieRepository
+            ->getMovieById($id);
     }
 
     public function getCategories()
