@@ -65,14 +65,14 @@ class MovieController extends Controller
         return view('data-movies', compact('movies'));
     }
 
-    public function form_edit($id)
+   public function edit($id)
     {
-        $movie = Movie::find($id);
+        $movie = Movie::findOrFail($id);
 
         $categories = $this->movieService
             ->getCategories();
 
-        return view('form-edit', compact('movie', 'categories'));
+    return view('form-edit', compact('movie', 'categories'));
     }
 
     public function update(Request $request, $id)
